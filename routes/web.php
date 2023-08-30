@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () { return view('welcome'); })->name('welcome');
 Route::get('/create', function () { return view('create_playlist'); });
 
-Route::get('/songrequest', function () { return view('songrequest'); });
+Route::get('/songrequest', function () { return view('songrequest'); })->name('request-song');
 
 /**Route::get('/dashboard', function () {
     return view('dashboard');
@@ -34,6 +34,9 @@ Route::get('/login/spotify/callback',[AuthController::class,'handleSpotifyCallba
 Route::get('/playlist',[SpotifyApiController::class,'getQueue'])->name('currentList');
 Route::post('/create-playlist', [SpotifyApiController::class, 'createPlaylist'])->name('create-playlist');
 
+Route::get('/handle-expired-token', [SpotifyApiController::class, 'handleExpiredToken'])->name('handle-expired-token');
+
+Route::get('/spotify-playlists', [SpotifyApiController::class, 'getAllSpotifyPlaylists'])->name('spotify-playlists');
 
 
 

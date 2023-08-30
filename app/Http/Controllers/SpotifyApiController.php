@@ -31,7 +31,7 @@ class SpotifyApiController extends Controller
     $user = Auth::user();
 
     if (!$user || !$user->spotify_access_token) {
-        return response()->json(['error' => 'User not authenticated'], 401);
+        return redirect()->route('spotify.login');
     }
 
     $response = Http::withHeaders([
@@ -43,8 +43,9 @@ class SpotifyApiController extends Controller
         return view('playlist', compact('queue'));
         //return response()->json(['queue' => $queue]);
     } else {
-        $errorMessage = $response->json()['error']['message'] ?? 'An error occurred';
-        return response()->json(['error' => $errorMessage], $response->status());
+       $errorMessage = $response->json()['error']['message'] ?? 'An error occurred';
+       return response()->json(['error' => $errorMessage], $response->status());
+
     }
 }
 
@@ -77,7 +78,71 @@ public function createPlaylist()
     }
 }
 
+public function handleExpiredToken()
+{
+    $user = Auth::user();
 
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+    $user->delete();
+    return redirect()->route('spotify.login');
+    }
+
+
+
+    public function getAllSpotifyPlaylists()
+{
+    $user = Auth::user();
+
+    if (!$user || !$user->spotify_access_token) {
+        return response()->json(['error' => 'User not authenticated'], 401);
+    }
+
+    $response = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $user->spotify_access_token,
+    ])->get('https://api.spotify.com/v1/me/playlists');
+
+    if ($response->successful()) {
+        $playlists = $response->json()['items'];
+
+        return view('spotify_playlists', compact('playlists'));
+    } else {
+        $errorMessage = $response->json()['error']['message'] ?? 'An error occurred';
+        return response()->json(['error' => $errorMessage], $response->status());
+    }
+}
+
+public function searchSong(Request $request)
+{
+    $user = Auth::user();
+
+    if (!$user || !$user->spotify_access_token) {
+        return redirect()->route('login');
+    }
+
+    $query = $request->input('q');
+
+    $response = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $user->spotify_access_token,
+    ])->get('https://api.spotify.com/v1/search', [
+        'q' => $query,
+        'type' => 'track',
+    ]);
+
+    if ($response->successful()) {
+        $searchResults = $response->json()['tracks']['items'];
+
+        return view('songrequest', compact('searchResults', 'query'));
+    } else {
+        $errorMessage = $response->json()['error']['message'] ?? 'An error occurred';
+        return back()->withErrors([$errorMessage]);
+    }
+}
 
 
 }
+
+
+
+
