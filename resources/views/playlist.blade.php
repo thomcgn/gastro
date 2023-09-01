@@ -7,7 +7,7 @@
 <body>
 <x-navbar/>
 
-@if ($queue)
+@if (isset($queue))
 <div class="flex justify-center w-screen mt-10">
     <div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="flex items-center justify-between mb-4">
@@ -46,7 +46,7 @@
 </div>
     </div>
     @else
-    <p>No track currently playing.</p>
+    <p>Derzeit spielt keine Musik</p>
 @endif
 </body>
 </html>

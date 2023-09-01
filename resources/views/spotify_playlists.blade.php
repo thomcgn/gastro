@@ -6,7 +6,7 @@
     </head>
 <body>
 <x-navbar/>
-<form method="post" >
+<form method="post">
     @csrf
     <div class="form-group">
         <label for="playlist_id">Select a Spotify Playlist:</label>

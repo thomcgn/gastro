@@ -24,37 +24,46 @@
             <input type="text" id="q" name="q" class="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-blue-200" placeholder="z.b London Calling" required>
           </div>
           <div>
-            @day('Monday' || 'Tuesday' || 'Wednesday' || 'Friday' || 'Saturday' || 'Sunday')
-
-             <div class="p-10">
-                <div class="group relative w-max">
-                    <button class="bg-gray-300 px-4 py-2 rounded-md cursor-not-allowed opacity-50" disabled>
-                        Zur Playlist
-                     </button>
-                 <span class="pointer-events-none absolute -top-7 left-0 w-max rounded bg-gray-900 px-2 py-1 text-sm font-medium text-gray-50 opacity-0 shadow transition-opacity group-hover:opacity-100">Songs können nur Donnerstags ab 21 Uhr eingetragen werden.</span>
-                </div>
-              </div>
-
-            @endday
 
 
-            @day('Thursday')
-            <button class="bg-green-500 hover:bg-green-700 active:bg-green-800 px-4 py-2 rounded-md text-white">
-                Zur Playlist
+
+            <button type="submit" class="bg-green-500 hover:bg-green-700 active:bg-green-800 px-4 py-2 rounded-md text-white">
+                Suchen
               </button>
-            @endday
 
-            @if (isset($searchResults))
-                <h2>Search Results for "{{ $query }}"</h2>
-                    <ul>
-                        @foreach ($searchResults as $result)
-                            <li>{{ $result['name'] }} by {{ $result['artists'][0]['name'] }}</li>
-                         @endforeach
-                    </ul>
-             @endif
+
+
 
           </div>
         </form>
+        @if (isset($searchResults))
+        <div class="flex items-center justify-between mb-4">
+            <h6 class="text-l font-semibold leading-none text-gray-900 dark:text-white">Gefundene Songs: </h6>
+        </div>
+                    <ul class="divide-y divide-gray-200">
+                        @foreach ($searchResults as $result)
+                        <li class="py-3 sm:py-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-shrink-0">
+                                    <button class="w-8 h-8 rounded-full bg-green-500 text-white">+</button>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    {{$result['name']}}
+                                    </p>
+                                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        {{$result['artists'][0]['name']}}
+                                    </p>
+                                    <div class="p-10">
+
+                                </div>
+                                </div>
+
+                            </div>
+                        </li>
+                         @endforeach
+                    </ul>
+             @endif
       </div>
 
   </div>

@@ -20,8 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () { return view('welcome'); })->name('welcome');
 Route::get('/create', function () { return view('create_playlist'); });
+Route::get('/pop', function(){return view('populate_playlist');})->name('popu');
 
-Route::get('/songrequest', function () { return view('songrequest'); })->name('request-song');
+
 
 /**Route::get('/dashboard', function () {
     return view('dashboard');
@@ -36,7 +37,14 @@ Route::post('/create-playlist', [SpotifyApiController::class, 'createPlaylist'])
 
 Route::get('/handle-expired-token', [SpotifyApiController::class, 'handleExpiredToken'])->name('handle-expired-token');
 
+Route::get('/songrequest', [SpotifyApiController::class,'searchSong'])->name('request-song');
+
+
 Route::get('/spotify-playlists', [SpotifyApiController::class, 'getAllSpotifyPlaylists'])->name('spotify-playlists');
+
+Route::get('/checkstate', [SpotifyApiController::class, 'getPlaybackState'])->name('checkstate');
+
+Route::post('/populate-playlist', [SpotifyApiController::class, 'populatePlaylist'])->name('populate-playlist');
 
 
 
