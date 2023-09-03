@@ -9,13 +9,18 @@ use App\Models\SpotifyPlaylist;
 
 class SpotifyApiController extends Controller
 {
+
     public function getQueue()
 {
+
+
+
     $user = Auth::user();
+    $playbackState = "";
 
     if (!$user || !$user->spotify_access_token) {
         return redirect()->route('spotify.login');
-    }
+    }else{
 
     //
     $response = Http::withHeaders([
@@ -26,6 +31,7 @@ class SpotifyApiController extends Controller
         $playbackState = $response->json();
     //
         }
+    }
     if($playbackState != null)
     {
         $response = Http::withHeaders([
@@ -59,7 +65,7 @@ public function createPlaylist(Request $request)
     ])->post('https://api.spotify.com/v1/users/' . $user->spotify_id . '/playlists', [
         'name' => 'E.D.P Themenabend "'.$playlistName.'" '. $date,
         'description' => 'Your Playlist Description',
-        'public' => false, // Change this to true if you want the playlist to be public
+        'public' => true, // Change this to true if you want the playlist to be public
     ]);
 
     if ($response->successful()) {
@@ -91,7 +97,7 @@ public function handleExpiredToken()
     $user = Auth::user();
 
     if (!$user) {
-        return response()->json(['error' => 'User not found'], 404);
+        return redirect()->route('spotify.login');
     }
     $user->delete();
     return redirect()->route('spotify.login');
@@ -114,7 +120,7 @@ public function handleExpiredToken()
     if ($response->successful()) {
         $playlists = $response->json()['items'];
 
-        return view('spotify_playlists', compact('playlists'));
+        return view('welcome', compact('playlists'));
     } else {
         $errorMessage = $response->json()['error']['message'] ?? 'An error occurred';
         return response()->json(['error' => $errorMessage], $response->status());

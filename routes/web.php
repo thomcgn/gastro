@@ -21,25 +21,24 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () { return view('welcome'); })->name('welcome');
 Route::get('/create', function () { return view('create_playlist'); });
 Route::get('/pop', function(){return view('populate_playlist');})->name('popu');
+Route::get('/songrequest', function () {return view('songrequest');
+
+});
 
 
-
-/**Route::get('/dashboard', function () {
+Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-**/
 
 
+Route::get('/',[SpotifyApiController::class,'getAllSpotifyPlaylists'])->name('home');
 Route::get('/login/spotify',[AuthController::class,'redirectToSpotify'])->name('spotify.login');
 Route::get('/login/spotify/callback',[AuthController::class,'handleSpotifyCallback']);
-Route::get('/playlist',[SpotifyApiController::class,'getQueue'])->name('currentList');
-Route::post('/create-playlist', [SpotifyApiController::class, 'createPlaylist'])->name('create-playlist');
-
 Route::get('/handle-expired-token', [SpotifyApiController::class, 'handleExpiredToken'])->name('handle-expired-token');
 
-Route::get('/songrequest', [SpotifyApiController::class,'searchSong'])->name('request-song');
 
-
+Route::get('/playlist',[SpotifyApiController::class,'getQueue'])->name('currentList');
+Route::post('/create-playlist', [SpotifyApiController::class, 'createPlaylist'])->name('create-playlist');
 Route::get('/spotify-playlists', [SpotifyApiController::class, 'getAllSpotifyPlaylists'])->name('spotify-playlists');
 
 Route::get('/checkstate', [SpotifyApiController::class, 'getPlaybackState'])->name('checkstate');

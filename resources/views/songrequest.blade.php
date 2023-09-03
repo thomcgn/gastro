@@ -14,7 +14,7 @@
               <li class="mb-1">Regel 4: Wir spielen keine Songs die in irgendeiner Form absichtlich auf eine Diskriminierung ausgelegt sind. Siehe Regel 3</li>
             </ul>
           </div>
-        <form class="space-y-4" method="get" action="{{route('request-song')}}">
+        <form class="space-y-4" method="get" >
           <div>
             <label for="artist" class="block text-gray-700 font-semibold">Interpret</label>
             <input type="text" id="artist" name="artist" class="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-blue-200" placeholder="z.B. The Clash" required>
@@ -36,34 +36,7 @@
 
           </div>
         </form>
-        @if (isset($searchResults))
-        <div class="flex items-center justify-between mb-4">
-            <h6 class="text-l font-semibold leading-none text-gray-900 dark:text-white">Gefundene Songs: </h6>
-        </div>
-                    <ul class="divide-y divide-gray-200">
-                        @foreach ($searchResults as $result)
-                        <li class="py-3 sm:py-4">
-                            <div class="flex items-center space-x-4">
-                                <div class="flex-shrink-0">
-                                    <button class="w-8 h-8 rounded-full bg-green-500 text-white">+</button>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                    {{$result['name']}}
-                                    </p>
-                                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                                        {{$result['artists'][0]['name']}}
-                                    </p>
-                                    <div class="p-10">
 
-                                </div>
-                                </div>
-
-                            </div>
-                        </li>
-                         @endforeach
-                    </ul>
-             @endif
       </div>
 
   </div>
